@@ -46,7 +46,7 @@ def functionToBeMinimized(a):
         s_guess.append(A*np.exp(np.complex(0,1)*(omega_guess*n*T+phi_guess)))
     sFFT = np.fft.fft(s_guess, M)
     # We minimize the mean square error between sFFT and xFFT
-    # np.concatenate merges arrays so the mse function only has to be called once
+    # np.concatenate merges arrays so that the mse function only has to be called once
     return mse(np.concatenate([np.real(sFFT), np.imag(sFFT)]), np.concatenate([np.real(xFFT), np.imag(xFFT)]))
 
 # Computation of omega_hat
