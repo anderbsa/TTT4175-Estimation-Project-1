@@ -13,7 +13,7 @@ phi = np.pi/8
 n_0 = -256
 N = 513
 M = 2**10
-ITERATIONS = 100
+ITERATIONS = 1000
 
 # SNR and variance
 SNR_list = np.array([-10, 0, 10, 20, 30, 40, 50, 60])
@@ -32,7 +32,7 @@ def var(a, mean):
         var += (val-mean)**2
     return var/(len(a))
 
-# Mean Square Error
+# Mean Squared Error
 def mse(a1, a2):
     return np.mean(np.square(np.subtract(a1, a2)))
 
@@ -46,7 +46,8 @@ def functionToBeMinimized(a):
         s_guess.append(A*np.exp(np.complex(0,1)*(omega_guess*n*T+phi_guess)))
     sFFT = np.fft.fft(s_guess, M)
     # We minimize the mean square error between sFFT and xFFT
-    return mse(np.concatenate([np.real(sFFT), np.imag(sFFT), np.abs(sFFT), np.angle(sFFT)]), np.concatenate([np.real(xFFT), np.imag(xFFT), np.abs(xFFT), np.angle(xFFT)]))
+    # np.concatenate merges arrays so the mse function only has to be called once
+    return mse(np.concatenate([np.real(sFFT), np.imag(sFFT)]), np.concatenate([np.real(xFFT), np.imag(xFFT)]))
 
 # Computation of omega_hat
 omega_hat_list = []
