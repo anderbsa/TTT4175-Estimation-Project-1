@@ -13,7 +13,7 @@ phi = np.pi/8
 n_0 = -256
 N = 513
 M = 2**10
-ITERATIONS = 1000
+ITERATIONS = 100
 
 # SNR and variance
 SNR_list = np.array([-10, 0, 10, 20, 30, 40, 50, 60])
