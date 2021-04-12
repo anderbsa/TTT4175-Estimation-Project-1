@@ -41,13 +41,13 @@ def functionToBeMinimized(a):
     omega_guess = a[0]
     phi_guess = a[1]
     # Generates a signal with the guessed frequency without noise
-    s_guess = []
-    for n in range(n_0, n_0+N):
-        s_guess.append(A*np.exp(np.complex(0,1)*(omega_guess*n*T+phi_guess)))
+    n_list = np.arange(n_0, n_0+N, 1)
+    s_guess = A*np.exp(np.complex(0,1)*(omega_guess*n_list*T+phi_guess))
     sFFT = np.fft.fft(s_guess, M)
     # We minimize the mean square error between sFFT and xFFT
     # np.concatenate merges arrays so that the mse function only has to be called once
     return mse(np.concatenate([np.real(sFFT), np.imag(sFFT)]), np.concatenate([np.real(xFFT), np.imag(xFFT)]))
+     
 
 # Computation of omega_hat
 omega_hat_list = []
@@ -69,7 +69,7 @@ for i in range(len(sigma2_list)):
     phi_hat_row = []
     for i in range(ITERATIONS):
         # Numerically minimises the MSE until it hits a threshhold or has ran for 20 iterations
-        result = scipy.optimize.minimize(functionToBeMinimized, [omega_guess, phi_guess], method="Nelder-Mead", options={"maxiter": 20}) 
+        result = scipy.optimize.minimize(functionToBeMinimized, [omega_guess, phi_guess], method="Nelder-Mead", options={"fatol": 1, "maxiter": 20}) 
         omega_hat_row.append(result.x[0])
         phi_hat_row.append(result.x[1])
     omega_hat_list.append(omega_hat_row)
@@ -87,7 +87,7 @@ for i in range(len(omega_hat_list)):
     phi_var_list.append(var(phi_hat_list[i], phi))
 
 # Prints the runtime
-print("Runtime: " + "{:.0f}".format(time.time() - start_time) + " seconds")
+print("Runtime: " + "{:.1f}".format(time.time() - start_time) + " seconds")
 
 # # Plot for the mean error of omega
 plt.plot(SNR_list, omega_error_list, label="omega_0 - omega_hat")
