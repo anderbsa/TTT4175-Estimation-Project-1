@@ -33,9 +33,8 @@ def var(a, mean):
 # Computes the MLE a given number of times
 def computeMLE(iterations):
     # Signal generation
-    s = []
-    for n in range(n_0, n_0+N):
-        s.append(A*np.exp(np.complex(0,1)*(omega_0*n*T+phi)))
+    n_list = np.arange(n_0, n_0+N, 1)
+    s = A*np.exp(np.complex(0,1)*(omega_0*n_list*T+phi))
 
     M_list = [2**10, 2**12, 2**14, 2**16, 2**18, 2**20] # The values of M for the M-point FFT
     omega_hat_list_M = [] # Contains omega_hat per M per SNR for all of the iterations
@@ -89,7 +88,7 @@ for M in range(len(omega_hat_list)):
     phi_error.append(phi_error_SNR)
 
 # Prints the runtime
-print("Runtime: " + "{:.0f}".format(time.time() - start_time) + " seconds")
+print("Runtime: " + "{:.1f}".format(time.time() - start_time) + " seconds")
 
 # Plot for the mean error of omega
 for i in range(len(omega_error)):
