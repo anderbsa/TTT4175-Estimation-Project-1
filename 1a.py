@@ -50,7 +50,7 @@ def computeMLE(iterations):
                 x = s + (np.complex(1,1))*np.random.normal(0, np.sqrt(sigma2), size=N)
 
                 # Computation of the estimators
-                FFT = np.fft.fft(x, M)
+                FFT = np.fft.fft(x, M) # Numpy zero pads automatically, so we don't need to worry about that
                 m_star = np.argmax(np.abs(FFT))
                 omega_hat = (2*np.pi*m_star)/(M*T)
                 phi_hat = np.angle(np.exp(np.complex(0,-1)*omega_hat*n_0*T)*FFT[m_star])
